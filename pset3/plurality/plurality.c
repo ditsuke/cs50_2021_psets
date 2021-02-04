@@ -44,7 +44,7 @@ int main(int argc, string argv[])
         candidates[i].name = argv[i + 1];
         candidates[i].votes = 0;
     }
-    
+
   int voter_count = get_int("Number of voters: ");
 
     // Loop over all voters
@@ -72,17 +72,17 @@ bool vote(string name)
         if (strcmp(name, candidates[i].name) == 0)
         {
             candidates[i].votes++;
-            return true;
+            return 1;
         }
     }
-    return false;
+    return 0;
 }
 
 // Print the winner (or winners) of the election
 void print_winner(void)
 {
-    
-    
+
+
     for (int i = 0; i < candidate_count; i++)
     {
         for (int j = 0; j < candidate_count; j++)
