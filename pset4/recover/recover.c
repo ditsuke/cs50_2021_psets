@@ -3,9 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// memory image is from a FAT filesystem with 512b block size
-#define BLOCK_SIZE 512
-
 typedef uint8_t BYTE;
 
 // funtion prototype(s)
@@ -36,11 +33,11 @@ int main(int argc, char *argv[]) {
     }
 
     // stores the most recently read FAT block (512 bytes) from ptr instr
-    BYTE cbuffer[BLOCK_SIZE];
+    BYTE cbuffer[512];
     // true if a JPEG signature is found
     bool sigFound = false;
     // stores number of elements read by fread
-    int elread = BLOCK_SIZE;
+    int elread = 512;
     // stores output JPEG count
     int fno = 0;
     // store base filename
@@ -49,12 +46,10 @@ int main(int argc, char *argv[]) {
     while (true) {
         // read a FAT block into cbuffer
         if (sigFound != true) {
-            elread = fread(cbuffer, sizeof(BYTE), BLOCK_SIZE, instr);
-        }  // break loop and close files if EOF is reached
-        if (elread != BLOCK_SIZE) {
+            elread = fread(cbuffer, sizeof(BYTE), 512, instr);
+        }  // break loop if EOF is reached
+        if (elread != 512) {
             printf("EOF reached!\n");
-            fclose(instr);
-            (outstr != NULL) ? (fclose(outstr)) : (0);
             break;
         }  // if signature is found, close old file (if exists), open new one...
         else if (matchJPEG_sig(cbuffer) && sigFound != true) {
@@ -62,26 +57,50 @@ int main(int argc, char *argv[]) {
             // close outstr if open
             (outstr != NULL) ? (fclose(outstr)) : (0);
             // print filename to var
-            sprintf(outname, "recovered2/%03i.jpg", fno++);
+            sprintf(outname, "%03i.jpg", fno++);
             // open outname with ptr outstr
             outstr = fopen(outname, "w");
             continue;
         }  // write file
         else {
             sigFound = false;
-            (outstr != NULL)
-                ? (fwrite(cbuffer, sizeof(BYTE), BLOCK_SIZE, outstr))
-                : (0);
+            (outstr != NULL) ? (fwrite(cbuffer, sizeof(BYTE), 512, outstr))
+                             : (0);
         }
     }
-
+    fclose(outstr);
+    fclose(instr);
     return 0;
 }
 
 bool matchJPEG_sig(BYTE *buffer) {
-    bool isMatch = (buffer[0] == 0xff && buffer[1] == 0xd8 &&
-                    buffer[2] == 0xff && (buffer[3] & 0xf0) == 0xe0)
-                       ? (1)
-                       : (0);
+    BYTE pos0 = 0xff, pos1 = 0xd8, pos2 = 0xff;
+    BYTE pos3[] = {0xe0, 0xe1, 0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7,
+                   0xe8, 0xe9, 0xea, 0xeb, 0xec, 0xed, 0xee, 0xef};
+
+    int pos = 0;
+
+    while (true) {
+        if (pos == 0 && buffer[pos] == pos0) {
+            pos++;
+            continue;
+        } else if (pos == 1 && buffer[pos] == pos1) {
+            pos++;
+            continue;
+        } else if (pos == 2 && buffer[pos] == pos2) {
+            pos++;
+            continue;
+        } else if (pos == 3) {
+            for (int i = 0; i < 16; i++) {
+                if (buffer[pos] == pos3[i]) {
+                    pos++;
+                    break;
+                }
+            }
+        } else {
+            break;
+        }
+    }
+    bool isMatch = (pos == 4) ? (true) : (false);
     return isMatch;
 }
