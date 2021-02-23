@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <stdint.h>
 
 // Represents a node in a hash table
 typedef struct node {
@@ -15,15 +16,15 @@ typedef struct node {
 } node;
 
 // Number of buckets in hash table
-const unsigned int N = 676;
+const unsigned int N = 0.75 * 143091;
 
 // Hash table
 node *table[N];
 
-// Linked list end pointers
+// Ptrs for latest nodes in linked lists
 node *listend[N];
 
-// dictionary size
+// Dictionary size
 int dictsize = 0;
 
 // Returns true if word is in dictionary, else false
@@ -36,59 +37,67 @@ bool check(const char *word) {
     while (true) {
         int comp = strcasecmp(word, llp->word);
         if (comp == 0) {
+            // Break if found
             isIn = true;
-            break;  // break if found
+            break;
         } else if (comp > 0 && llp->next != NULL) {
+            // Advance linked list pos ptr, jump to next iteration
             llp = llp->next;
             continue;
         } else {
-            break;  // break if lexicographic position of word has passed
+            // Break if lexicographic position of word has passed
+            break;
         }
     }
     return isIn;
 }
 
-// Hashes word to a number
+// Hashes word to a number using the djb2 algo
 unsigned int hash(const char *word) {
-    // for N = 676
-    unsigned int nhash, c1, c2;
-    c1 = ((word[0] >= 97 && word[0] <=122) ? word[0] - 97 : (word[0] >= 65 && word[0] <=90) ? word[0] - 65 : 0);
-    c2 = ((word[1] == '\0') ? (0) : ((word[1] >= 97 && word[1] <=122) ? word[1] - 97 : (word[1] >= 65 && word[1] <=90) ? word[1] - 65 : 0));
-    nhash = 26 * c1 + 1 * c2;  // Needs case insensitivity (TODO -- done?)
-    return nhash;
+    unsigned long hash = 5381;
+    int c;
+
+    while ((c = *word++)) {
+        c = ((c >= 97 && c <=122) ? c - 97 : (c >= 65 && c <=90) ? c - 65 : c);
+        // hash * 33 + c (<<5 uses left shift to achieve this more efficiently)
+        hash = ((hash << 5) + hash) + c;
+    }
+    // Cap hash at N-1 and return
+    return hash % N;
 }
 
 // Loads dictionary into memory, returning true if successful, else false
 bool load(const char *dictionary) {
     FILE *dictstr;
     dictstr = fopen(dictionary, "r");
-    // return false if unable to open dictionary file
+    // Return false if unable to open dictionary file
     if (dictstr == NULL) {
         return false;
     }
 
     // Initialise first nodes and listend ptrs
-    for (int i = 0; i < N; i++) {
-        table[i] = malloc(sizeof(node));
+    for (int i = 0; i < N; ++i) {
+        table[i] = calloc(1, sizeof(node));
         listend[i] = table[i];
-        strcpy(listend[i]->word, "");
-        listend[i]->next = NULL;
     }
 
     char cword[LENGTH + 1];
+    // Stores fscanf return, EOF when file has been read
     int word_read = 0;
     do {
         word_read = fscanf(dictstr, "%s\n", cword);
         if (word_read == EOF) {
             break;
         }
-        dictsize++;
+        // Increment dictionary size
+        ++dictsize;
+        // Stores word hash
         unsigned int chash = hash(cword);
         strcpy(listend[chash]->word, cword);
-        listend[chash]->next = malloc(sizeof(node));
+        // Allocate memory for next node in linked list
+        listend[chash]->next = calloc(1, sizeof(node));
+        // Advance ptr
         listend[chash] = listend[chash]->next;
-        strcpy(listend[chash]->word, "");
-        listend[chash]->next = NULL;
     } while (true);
 
     fclose(dictstr);
@@ -102,7 +111,7 @@ unsigned int size(void) {
 
 // Unloads dictionary from memory, returning true if successful, else false
 bool unload(void) {
-    for (int i = 0; i < N; i++) {
+    for (int i = 0; i < N; ++i) {
         node *ll = table[i];
         node *llr;
         while (true) {
