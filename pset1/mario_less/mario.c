@@ -3,12 +3,12 @@
 
 // Function Prototypes
 void stair(int n);
-int get_positive_int(int lower, int upper);
+int get_int_in_range(int lower, int upper);
 
 int main(void)
 {
     // Get as input a positive int
-    int h = get_positive_int(1, 8);
+    int h = get_int_in_range(1, 8);
 
     // Call stair() to print stair of height h
     stair(h);
@@ -46,7 +46,7 @@ void stair(int n)
     }
 }
 
-int get_positive_int(int lower, int upper)
+int get_int_in_range(int lower, int upper)
 {
     int n = 0;
 
