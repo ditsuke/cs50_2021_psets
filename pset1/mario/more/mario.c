@@ -15,8 +15,8 @@ int main(void)
 /* *************************************
  * Implementing the staircase using nested for() loops.
  * One does the n rows and 3 nested ones that take care
- * of the n-m spaces " ", m sharps "#", 2 spaces "  " 
- * and another m Sharps "#" on each row 
+ * of the n-m spaces " ", m sharps "#", 2 spaces "  "
+ * and another m Sharps "#" on each row
  * *************************************/
 
 void stair(int n)
@@ -32,7 +32,7 @@ void stair(int n)
             printf(" ");
         }
 
-        // Print l=m sharps"#" on each row
+        // Print l=m sharps "#" on each row
         for (l = 0; l < m + 1; l++)
         {
             printf("#");

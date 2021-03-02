@@ -7,8 +7,8 @@ int main(void)
     string in_name = get_string("What is your name?");
 
     // Print to stdout
-    printf("hello, %s\n");
-    
+    printf("hello, %s\n", in_name);
+
     // Return with exit code 0
     return 0;
 }
