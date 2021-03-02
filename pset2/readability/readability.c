@@ -1,23 +1,30 @@
+/* *************************************
+ * A Program to calculate the Coleman-Liau Index of a given text.
+ * Usage: ./readability
+ * author: github.com/dst27
+ * October 2020
+ * *************************************/
+
 #include <stdio.h>
 #include <cs50.h>
 #include <string.h>
 #include <math.h>
 
+// Function prototypes
 int countLetters(string input);
 int countWords(string input);
 int countSentences(string input);
 int ColemanLiau_I(string text);
 
-
 int main(void)
 {
+    // Stores input string
     string s = get_string("Enter string: ");
 
-    //printf("String has '%i' letters.\n", countLetters(s));        // to debug
-    //printf("String has '%i' words.\n", countWords(s));            // to debug
-    //printf("String has '%i' sentences.\n", countSentences(s));    // to debug
-
+    // Stores grade of text as given by the Coleman-Liau formula.
     int textgrade = ColemanLiau_I(s);
+
+    // Print text grade to stdout as per problem spec
     if (textgrade < 1)
     {
         printf("Before Grade 1\n");
@@ -33,50 +40,72 @@ int main(void)
     return 0;
 }
 
-int countLetters(string input) // returns the number of letters in input string
+// Counts the number of letters in input string
+int countLetters(string input)
 {
+    // Stores number of letters found
     int lCount = 0;
+
+    // Iterate over input string
     for (int i = 0, c = strlen(input); i < c; i++)
     {
+        // Increment lcount for each Latin Alphabet found
         if ((input[i] >= 'a' && input[i] <= 'z') || (input[i] >= 'A' && input[i] <= 'Z'))
         {
             lCount++;
         }
     }
+    // Return computed letter count
     return lCount;
 }
 
-int countWords(string input) // returns the number of words in input string
+// Counts the number of words in input string
+int countWords(string input)
 {
+    // Stores number of words found
     int wCount = 0;
+
+    // Iterate over string
     for (int i = 0, c = strlen(input); i < c; i++)
     {
+        // Increment wCount for each Latin alphabet encountered that precedes a space,
+        // a comma, or a period.
         if (((input[i] >= 'a' && input[i] <= 'z') || (input[i] >= 'A' && input[i] <= 'Z')) &&
-            (input[i + 1] == ' ' || input[i + 1] == ',' || input[i + 1] == '.' || input[i + 1] == '!'
-             || input[i + 1] == '?' || input[i + 1] == '\0'))
+            (input[i + 1] == ' ' || input[i + 1] == ',' || input[i + 1] == '.' || input[i + 1] == '!' || input[i + 1] == '?'
+             || input[i + 1] == '\0'))
         {
             wCount++;
         }
     }
+    // Return computed word count
     return wCount;
 }
 
-int countSentences(string input) // returns the number of sentences in input string
+// Counts the number sentences in string input
+int countSentences(string input)
 {
+    // Stores sentence count
     int sCount = 0;
+
+    // Iterate over string
     for (int i = 0, c = strlen(input); i < c; i++)
     {
-        if (input[i] == '.' || input[i] == '!' || input[i] == '?') // assumes that ".", "!" and "?" mark the end of a sentence
+        // Increment sCount for each period, exclamation and question symbol encountered
+        if (input[i] == '.' || input[i] == '!' || input[i] == '?')
         {
             sCount++;
         }
     }
+    // Return computed sentence count
     return sCount;
 }
 
-int ColemanLiau_I(string text) // calculates the Coleman-Liau Index of input text
+// Calculate the Coleman-Liau Index of input text
+int ColemanLiau_I(string text)
 {
-    double index = 0.0588 * (((float)countLetters(text) / countWords(text)) * 100) - 0.296
-                   * (((float)countSentences(text) / countWords(text)) * 100) - 15.8;
+    double index = 0.0588 * (((float)countLetters(text) / countWords(text)) * 100) - 0.296 * (((float)countSentences(text) / 
+                   countWords(text)) * 100) - 15.8;
+
+    // Return computed index rounded to nearest int
     return round(index);
 }
