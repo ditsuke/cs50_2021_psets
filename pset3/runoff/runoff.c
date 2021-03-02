@@ -204,8 +204,10 @@ bool is_tie(int min)
             continue;
         }
         // returns false if any candidate has a vote count different than others
-        if (candidates[i].eliminated == false && candidates[i].votes != base)
+        if (candidates[i].eliminated == false && candidates[i].votes != base) 
+        {
             return false;
+        }
     }
     return true;
 }
