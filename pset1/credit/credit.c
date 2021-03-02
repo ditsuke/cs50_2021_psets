@@ -49,7 +49,7 @@ int main(void)
         return 0;
     }
     // CHECK FOR VISA CARDS
-    else if (i_1 == 4 || i_1 == 4)
+    else if (i_1 == 4)
     {
         printf("VISA\n");
         return 0;
