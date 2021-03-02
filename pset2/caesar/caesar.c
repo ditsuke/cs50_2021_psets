@@ -1,3 +1,11 @@
+/* *************************************
+ * Encrypt strings using the Caesar encryption algorithm
+ * Usage: ./caesar key
+ * (key must be an integer)
+ * author: github.com/dst27
+ * October 2020
+ * *************************************/
+
 #include <stdio.h>
 #include <cs50.h>
 #include <string.h>
