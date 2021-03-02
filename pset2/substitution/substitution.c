@@ -1,66 +1,76 @@
-// Implements a simple substituition cipher. Usage: ./substitution key
-// key must be 26 unique characters long alphabetic.
-// author: github.com/dst27
-// October 2020
-
+/* *************************************
+ * Implements a simple substituition cipher. 
+ * Usage: ./substitution key
+ * (Key must be 26 unique characters long alphabetic).
+ * author: github.com/dst27
+ * October 2020
+ * *************************************/
 
 #include <stdio.h>
 #include <string.h>
 #include <cs50.h>
+#include <stdbool.h>
 
+// Function prototypes
 int hasAlphabeticChars(string sequence);
-string flattenSequence(string sequence);
 int hasUniqueLetters(string sequence);
+string flattenSequence(string sequence);
 string sub_crypt(char *input, string key);
 
 
 int main(int argc, string argv[])
 {
-    if (argc != 2) // returns with exit code 1 if number of command line arguments is not 1
+    // returns with exit code 1 if arg_count != 2
+    if (argc != 2)
     {
         printf("⚠ requires exactly one argument to use as key! ⚠\nUsage: ./substitution key\n");
         return 1;
     }
-    else if (strlen(argv[1]) != 26) // returns with exit code 1 if number of chars in argument != 26.
+    // returns with exit code 1 if argument doesn't have 26 chars
+    else if (strlen(argv[1]) != 26)
     {
         printf("⚠ key is not 26 characters long!\n");
         return 1;
     }
-    else if (hasAlphabeticChars(argv[1]) == 0) // return with exit code 1 if all 26 chars are not alphabetic
+    // returns with exit code 1 if argument isn't purely alphabetic
+    else if (hasAlphabeticChars(argv[1]) == 0)
     {
         printf("⚠ key has non alphabetic characters!\n");
         return 1;
     }
-    else if (hasUniqueLetters(argv[1]) == 0) // return with exit code 1 if all 26 letters in key are not unique
+    // returns with exit code 1 if argument has any duplicate alphabet
+    else if (hasUniqueLetters(argv[1]) == 0)
     {
         printf("⚠ key has character duplication!\n");
         return 1;
     }
-    
-    
-    char *plaintext = get_string("plaintext: ");
-    printf("ciphertext: %s\n", sub_crypt(plaintext, flattenSequence(argv[1])));
 
+    // Stores input string
+    string plaintext = get_string("plaintext: ");
+
+    // Print encrypted string to stdout
+    printf("ciphertext: %s\n", sub_crypt(plaintext, flattenSequence(argv[1])));
     return 0;
 }
 
 
-
-int hasAlphabeticChars(string sequence) // returns 1 if each char in sequence is alphabetic, 0 otherwise
+// Returns true if sequence is purely alphabetic
+int hasAlphabeticChars(string sequence)
 {
     for (int i = 0, c = strlen(sequence); i < c; i++)
     {
         if (!((sequence[i] >= 'A' && sequence[i] <= 'Z') || (sequence[i] >= 'a' && sequence[i] <= 'z')))
         {
-            return 0;
+            return false;
         }
     }
-    return 1;
+    return true;
 }
 
-string flattenSequence(string sequence) // returns sequence flattened to uppercase
+// "Flattens" sequence to uppercase
+string flattenSequence(string sequence)
 {
-    string flatSequence = sequence; // ⚠ likely needs modifying, currently sequence modified when flatSequence is
+    string flatSequence = sequence;
     for (int i = 0; i < 26; i++)
     {
         if (sequence[i] >= 'a' && sequence[i] <= 'z')
@@ -71,27 +81,31 @@ string flattenSequence(string sequence) // returns sequence flattened to upperca
     return flatSequence;
 }
 
-
-int hasUniqueLetters(string sequence) // returns 1 if each character in sequence is unique, 0 otherwise
+// Returns true if each character in sequence is unique
+int hasUniqueLetters(string sequence)
 {
-    char standardSequence[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; //get_string("Enter: ");
-    for (int i = 0; i < 26; i++)
+    // Stores standard latin alphabet A-Z
+    char standardSequence[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (int i = 0, c = strlen(sequence); i < c; i++)
     {
         if (standardSequence[flattenSequence(sequence)[i] - 65] != '0')
         {
             standardSequence[flattenSequence(sequence)[i] - 65] = '0';
         }
-        else // return with code 0 if duplicate letter found
+        // Return false if duplicate letter found
+        else
         {
-            return 0;
+            return false;
         }
     }
-    return 1;
+    // Return true if all alphabets were unique
+    return true;
 }
 
-string sub_crypt(char *input, string key) // returns input string encrypted with key string using simple substitution
+// Encrypts string input with string key using simple substitution
+string sub_crypt(string input, string key)
 {
-    char *output = input;
+    string output = input;
     for (int i = 0, c = strlen(input); i < c; i++)
     {
         if (input[i] >= 'A' && input[i] <= 'Z')
