@@ -1,0 +1,270 @@
+import os
+
+from cs50 import SQL
+from flask import Flask, flash, redirect, render_template, request, session
+from flask_session import Session
+from tempfile import mkdtemp
+from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
+from werkzeug.security import check_password_hash, generate_password_hash
+
+from helpers import apology, extend_portfolio, login_required, lookup, usd
+
+import requests
+import json
+
+
+# Set API key (!! remove before submission)
+os.environ["API_KEY"] = "pk_0c13604415324fe7a7608a1c97aa1728"
+os.environ["FLASK_DEBUG"] = "1"
+
+# Configure application
+app = Flask(__name__)
+# app.run(debug=True)
+
+# Ensure templates are auto-reloaded
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+
+
+# Ensure responses aren't cached
+@app.after_request
+def after_request(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Expires"] = 0
+    response.headers["Pragma"] = "no-cache"
+    return response
+
+
+# Custom filter
+app.jinja_env.filters["usd"] = usd
+
+# Configure session to use filesystem (instead of signed cookies)
+app.config["SESSION_FILE_DIR"] = mkdtemp()
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
+# Configure CS50 Library to use SQLite database
+db = SQL("sqlite:///finance.db")
+
+# Make sure API key is set
+if not os.environ.get("API_KEY"):
+    raise RuntimeError("API_KEY not set")
+
+
+@app.route("/")
+@login_required
+def index():
+    """Show portfolio of stocks"""
+    user_portfolio = db.execute("SELECT * FROM portfolio WHERE username = ?", session["user_name"])
+    eportfolio = extend_portfolio(user_portfolio)
+    user_portfolio = eportfolio[0]
+    totalPortfolioValue = eportfolio[1]
+    return render_template("index.html", portfolio=user_portfolio, portVal = totalPortfolioValue)
+
+    return apology("TODO")
+
+
+@app.route("/buy", methods=["GET", "POST"])
+@login_required
+def buy():
+    """Buy shares of stock"""
+    if request.method == "GET":
+        return render_template("buy.html")
+    elif request.method == "POST":
+        # Basic Validation of parameters
+        if not request.form.get("symbol") or not request.form.get("scount"):
+            return apology("Invalid stock or count! :/")
+
+        # Render apology if Stock to buy not valid
+        stock_quote = lookup(request.form.get("symbol"))
+        if not stock_quote:
+            return apology("Invalid stock! :|")
+        stock_price = float(stock_quote["price"])
+        stock_count = int(request.form.get("scount"))
+        user_balance = float(db.execute("SELECT * from users where id = ?", session["user_id"])[0]["cash"])
+
+        if user_balance < (stock_price * stock_count):
+            return apology("You don't have enough money! 🥺")
+
+        user_balance = user_balance - (stock_price * stock_count)
+        print(f">>> UPDATED USER BALANCE IS {user_balance}")
+
+        # Update database
+        db.execute("INSERT INTO transactions (userid, type, stock, units, price, total) VALUES (?, ?, ?, ?, ?, ?);", str(session["user_id"]), "buy", request.form.get("symbol"), str(stock_count), str(stock_price), str(stock_count * stock_price))
+        db.execute("UPDATE users SET cash = ? WHERE id = ?", user_balance, session["user_id"])
+        db.execute(f"INSERT INTO portfolio (pid, username, stock, count) VALUES ('{session['user_id']}-{request.form.get('symbol')}', (SELECT username FROM users WHERE id = '6'), '{request.form.get('symbol')}', '100') ON CONFLICT(pid) DO UPDATE SET count = count + '{stock_count}'")
+
+        # Update balance var
+        session["user_balance"] = round(user_balance, 2)
+        # db.execute("UPDATE portfolio ")
+        return redirect("/buy")
+
+    return apology("TODO")
+
+
+@app.route("/history")
+@login_required
+def history():
+    """Show history of transactions"""
+    user_tr_history = db.execute("SELECT * FROM transactions WHERE userid = ?", session["user_id"])
+    return render_template("history.html", history = user_tr_history)
+    return apology("TODO")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    """Log user in"""
+
+    # Forget any user_id
+    session.clear()
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+
+        # Ensure username was submitted
+        if not request.form.get("username"):
+            return apology("must provide username", 403)
+
+        # Ensure password was submitted
+        elif not request.form.get("password"):
+            return apology("must provide password", 403)
+
+        # Query database for username
+        rows = db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username"))
+
+        # Ensure username exists and password is correct
+        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
+            return apology("invalid username and/or password", 403)
+
+        # Remember which user has logged in
+        session["user_id"] = rows[0]["id"]
+        session["user_name"] = rows[0]["username"]
+
+        # Set user balance
+        session["user_balance"] = round(db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])[0]["cash"], 2)
+
+        # Redirect user to home page
+        return redirect("/")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    """Log user out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect("/")
+
+
+@app.route("/quote", methods=["GET", "POST"])
+@login_required
+def quote():
+    """Get stock quote."""
+    if request.method == "GET":
+        return render_template("quote.html")
+    elif request.method == "POST":
+        stock_symbol = request.form.get("symbol")
+        QUOTE = lookup(stock_symbol)
+        if not QUOTE:
+            return apology("COULD NOT GET QUOTE. WRONG SYMBOL?")
+        return render_template("quoted.html", quote = QUOTE)
+
+    return apology("TODO")
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """Register user"""
+    if request.method == "GET":
+        return render_template("register.html")
+    elif request.method == "POST":
+        if not request.form.get("username"):
+            return apology("BLANK USERNAME 🤨")
+        elif db.execute("SELECT * FROM users WHERE username = ?", request.form.get("username")):
+            return apology("USERNAME ALREADY EXISTS 😢")
+        elif request.form.get("password") != request.form.get("confirmation") or not request.form.get("password"):
+            return apology("PASSWORDS BLANK OR DON'T MATCH 😑")
+        else:
+            db.execute(
+                f"INSERT INTO users (username, hash) VALUES (\"{request.form.get('username')}\", \"{generate_password_hash(request.form.get('password'))}\")")
+            return redirect("/login")
+    return apology("TODO")
+
+
+@app.route("/sell", methods=["GET", "POST"])
+@login_required
+def sell():
+    """Sell shares of stock"""
+    stock_portfolio = db.execute("SELECT * FROM portfolio WHERE username = ?", session["user_name"])
+    if request.method == "GET":
+        return render_template("sell.html", stocks = stock_portfolio)
+    if request.method == "POST":
+        sell_stock = request.form.get("symbol")
+        sell_count = int(request.form.get("scount"))
+        stock_entry = [stock for stock in stock_portfolio if stock["stock"] == sell_stock]
+
+        # Debug
+        print(">>>> Sell stock ::" + str(sell_stock))
+
+        # Check if Stock is in User's portfolio
+        if not stock_entry:
+            return apology("You don't have stock. Hacker?")
+        stock_entry = stock_entry[0]
+        if not (sell_count <= stock_entry["count"]):
+            return apology(f"You don't have {sell_count} shares to sell 🤡")
+        sell_stock_price = lookup(sell_stock)["price"]
+
+        # Update database
+        db.execute(f"INSERT INTO transactions (userid, type, stock, units, price, total) VALUES ('{session['user_id']}', 'sell', '{sell_stock}', '{sell_count}', '{sell_stock_price}', '{sell_count * sell_stock_price}')")
+        if (sell_count < stock_entry["count"]):
+            db.execute(f"UPDATE portfolio SET count = count - {sell_count} WHERE username = '{session['user_name']}' AND stock = '{sell_stock}'")
+        else:
+            db.execute(f"DELETE FROM portfolio WHERE username = '{session['username']}' AND stock = '{sell_stock}'")
+        db.execute(f"UPDATE users SET cash = cash + {sell_count * sell_stock_price} WHERE username = '{session['user_name']}'")
+
+        # Update user balance var
+        session["user_balance"] = round(db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])[0]["cash"], 2)
+        
+        redirect("/")
+    return apology("TODO")
+
+@app.route("/passchange", methods=["GET", "POST"])
+@login_required
+def passchange():
+    """Implement Password Change"""
+    if request.method == "GET":
+        return render_template("passchange.html")
+    elif request.method == "POST":
+        p_og = request.form.get("pass")
+        p_new = request.form.get("newpass")
+        p_newc = request.form.get("newpassconf")
+        old_hash = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])[0]["hash"]
+        
+        if not check_password_hash(old_hash, p_og):
+            return apology("Old Password Wrong!")
+        elif not p_new == p_newc:
+            return apology("New Passwords Do Not Match >|<")
+        else:
+            new_hash = generate_password_hash(p_new)
+            db.execute("UPDATE users SET hash = ? WHERE id = ?", new_hash, session["user_id"])
+            return redirect("/")
+
+
+    return apology("TODO")
+
+def errorhandler(e):
+    """Handle error"""
+    if not isinstance(e, HTTPException):
+        e = InternalServerError()
+    return apology(e.name, e.code)
+
+
+# Listen for errors
+for code in default_exceptions:
+    app.errorhandler(code)(errorhandler)

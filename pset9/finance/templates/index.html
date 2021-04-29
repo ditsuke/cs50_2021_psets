@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Portfolio
+{% endblock title %}
+
+{% block main %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Stock</th>
+                <th scope="col">Symbol</th>
+                <th scope="col">Shares</th>
+                <th scope="col">Value</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in portfolio %}
+                <tr>
+                    <th>{{stock["name"]}}</th>
+                    <td>{{stock["stock"]}}</td>
+                    <td>{{stock["count"]}}</td>
+                    <td>{{stock["price"]}}</td>
+                    <td>{{stock["totalValue"]}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="background-color: #d6bfbf; border-radius: 3%;">{{portVal}}</td>
+        </tfoot>
+    </table>
+{% endblock main %}

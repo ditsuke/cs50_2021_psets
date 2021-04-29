@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock title %}
+
+{% block main %}
+    <table class="table table-striped">
+        <thead>
+            <th scope="col">Time</th>
+            <th scope="col">Type</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Units</th>
+            <th scope="col">Price</th>
+            <th scope="col">total</th>
+        </thead>
+        <tbody>
+            {% for entry in history %}
+                <tr>
+                    <th>{{entry["timestamp"]}}</th>
+                    <td>{{entry["type"]}}</td>
+                    <td>{{entry["stock"]}}</td>
+                    <td>{{entry["units"]}}</td>
+                    <td>{{entry["price"]}}</td>
+                    <td>{{entry["total"]}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock main %}

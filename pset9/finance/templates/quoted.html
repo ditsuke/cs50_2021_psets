@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock title %}
+
+{% block main %}
+    <table class="table table-striped">
+        {% for key in quote %}
+            <tr>
+                <td>{{quote[key]}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock main %}
