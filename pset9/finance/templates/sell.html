@@ -7,7 +7,7 @@
 {% block main %}
     <form action="/sell" method="post" id="sellform">
         <div class="form-group">
-            <select class="custom-select" form="sellform" name="symbol" autofocus autocomplete="off">
+            <select class="custom-select" form="sellform" name="symbol" autofocus autocomplete="off" required>
                 <option value="" disabled selected hidden> Stock</option>
                 {% for stock in stocks %}
                 <option value="{{stock["stock"]}}">{{stock["stock"]}}</option>
@@ -15,7 +15,7 @@
             </select>
         </div>
         <div class="form-group">
-            <input class="form-control" type="number" name="scount" placeholder="Number of Shares" autocomplete="off">
+            <input class="form-control" type="number" name="scount" placeholder="Number of Shares" autocomplete="off" min="1" required>
         </div>
         <div>
             <input class="btn btn-primary" type="submit" value="Sell">

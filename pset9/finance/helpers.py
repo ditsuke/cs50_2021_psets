@@ -75,3 +75,13 @@ def extend_portfolio(portfolio):
         portfolio,
         totalVal
     ]
+
+def isPositiveInt(string):
+    try:
+        string_float =  float(string)
+        if not string_float % 1 and string_float > 0:
+            return True
+        else:
+            return False
+    except:
+        return False

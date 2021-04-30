@@ -25,13 +25,20 @@
                     <td>{{stock["totalValue"]}}</td>
                 </tr>
             {% endfor %}
+            <tr>
+                <th>CASH</th>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>{{session["user_balance"]}}</td>
+            </tr>
         </tbody>
         <tfoot>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
-            <td style="background-color: #d6bfbf; border-radius: 3%;">{{portVal}}</td>
+            <td style="background-color: #d6bfbf; border-radius: 3%;">{{portVal + session["user_balance"]}}</td>
         </tfoot>
     </table>
 {% endblock main %}
