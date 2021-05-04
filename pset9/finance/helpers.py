@@ -15,7 +15,7 @@ def apology(message, code=400):
         https://github.com/jacebrowning/memegen#special-characters
         """
         for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
-                        ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
             s = s.replace(old, new)
         return s
     return render_template("apology.html", top=code, bottom=escape(message)), code
@@ -63,6 +63,7 @@ def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
 
+
 def extend_portfolio(portfolio):
     totalVal = 0
     for stock in portfolio:
@@ -76,9 +77,10 @@ def extend_portfolio(portfolio):
         totalVal
     ]
 
+
 def isPositiveInt(string):
     try:
-        string_float =  float(string)
+        string_float = float(string)
         if not string_float % 1 and string_float > 0:
             return True
         else:

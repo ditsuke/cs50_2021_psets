@@ -21,8 +21,8 @@
                     <td>{{entry["type"]}}</td>
                     <td>{{entry["stock"]}}</td>
                     <td>{{entry["units"]}}</td>
-                    <td>{{entry["price"]}}</td>
-                    <td>{{entry["total"]}}</td>
+                    <td>{{entry["price"] | usd}}</td>
+                    <td>{{entry["total"] | usd}}</td>
                 </tr>
             {% endfor %}
         </tbody>

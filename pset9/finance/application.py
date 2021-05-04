@@ -63,7 +63,7 @@ def buy():
         return render_template("buy.html")
 
     elif request.method == "POST":
-        buy_stock = request.form.get("symbol").strip()
+        buy_stock = request.form.get("symbol").strip().upper()
         buy_count = request.form.get("shares").strip()
 
         # Basic validation of parameters
@@ -74,27 +74,28 @@ def buy():
         stock_quote = lookup(buy_stock)
         if not stock_quote:
             return apology("Invalid stock! :|")
-        stock_price = float(stock_quote["price"])
-        stock_count = int(buy_count)
-        user_balance = float(db.execute(
-            "SELECT * from users where id = ?", session["user_id"])[0]["cash"])
+        else:
+            stock_price = float(stock_quote["price"])
+            buy_count = int(buy_count)
+            user_balance = float(db.execute(
+                "SELECT * from users where id = ?", session["user_id"])[0]["cash"])
 
-        if user_balance < (stock_price * stock_count):
+        if user_balance < (stock_price * buy_count):
             return apology("You don't have enough money! 🥺")
 
-        user_balance = user_balance - (stock_price * stock_count)
-        print(f">>> UPDATED USER BALANCE IS {user_balance}")
+        user_balance = user_balance - (stock_price * buy_count)
 
         # Update database
         db.execute("INSERT INTO transactions (userid, type, stock, units, price, total) VALUES (?, ?, ?, ?, ?, ?);", str(
-            session["user_id"]), "buy", buy_stock, str(stock_count), str(stock_price), str(stock_count * stock_price))
+            session["user_id"]), "buy", buy_stock, str(buy_count), str(stock_price), str(buy_count * stock_price))
         db.execute("UPDATE users SET cash = ? WHERE id = ?",
                    user_balance, session["user_id"])
         db.execute(
-            f"INSERT INTO portfolio (pid, username, stock, count) VALUES ('{session['user_id']}-{request.form.get('symbol')}', (SELECT username FROM users WHERE id = '6'), '{request.form.get('symbol')}', '100') ON CONFLICT(pid) DO UPDATE SET count = count + '{stock_count}'")
+            f"INSERT INTO portfolio (pid, username, stock, count) VALUES ('{session['user_id']}-{buy_stock}', '{session['user_name']}', '{buy_stock}', '{buy_count}') ON CONFLICT(pid) DO UPDATE SET count = count + '{buy_count}'")
 
         # Update balance var
-        session["user_balance"] = round(user_balance, 2)
+        session["user_balance"] = round(db.execute(
+            "SELECT cash FROM users WHERE id = ?", session["user_id"])[0]["cash"], 2)
 
         # Redirect to portfolio
         flash("Successfully bought %s shares of %s @ $%s per share." %
@@ -231,7 +232,7 @@ def sell():
 
     if request.method == "POST":
         # Process form input and get reference from database
-        sell_stock = request.form.get("symbol").strip()
+        sell_stock = request.form.get("symbol").strip().upper()
         sell_count = request.form.get("shares").strip()
         stock_entry = next(
             (stock for stock in stock_portfolio if stock["stock"] == sell_stock), False)
