@@ -64,7 +64,7 @@ def buy():
 
     elif request.method == "POST":
         buy_stock = request.form.get("symbol").strip()
-        buy_count = request.form.get("scount")
+        buy_count = request.form.get("shares").strip()
 
         # Basic validation of parameters
         if not buy_stock or not buy_count or not isPositiveInt(buy_count):
@@ -232,13 +232,15 @@ def sell():
     if request.method == "POST":
         # Process form input and get reference from database
         sell_stock = request.form.get("symbol").strip()
-        sell_count = request.form.get("scount")
+        sell_count = request.form.get("shares").strip()
         stock_entry = next(
             (stock for stock in stock_portfolio if stock["stock"] == sell_stock), False)
 
         # Validate and process form input further
         if not sell_stock or not sell_count or not isPositiveInt(sell_count):
             return apology("Invalid stock or count :|")
+        else:
+            sell_count = int(sell_count)
 
         # Check if stock is in user's portfolio
         if not stock_entry:

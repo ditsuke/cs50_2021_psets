@@ -21,8 +21,8 @@
                     <th>{{stock["name"]}}</th>
                     <td>{{stock["stock"]}}</td>
                     <td>{{stock["count"]}}</td>
-                    <td>{{stock["price"]}}</td>
-                    <td>{{stock["totalValue"]}}</td>
+                    <td>{{stock["price"] | usd}}</td>
+                    <td>{{stock["totalValue"] | usd}}</td>
                 </tr>
             {% endfor %}
             <tr>
@@ -30,7 +30,7 @@
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
-                <td>{{session["user_balance"]}}</td>
+                <td>{{session["user_balance"] | usd}}</td>
             </tr>
         </tbody>
         <tfoot>
@@ -38,7 +38,7 @@
             <td></td>
             <td></td>
             <td></td>
-            <td style="background-color: #d6bfbf; border-radius: 3%;">{{portVal + session["user_balance"]}}</td>
+            <td style="background-color: #d6bfbf; border-radius: 3%;">{{(portVal + session["user_balance"]) | usd}}</td>
         </tfoot>
     </table>
 {% endblock main %}

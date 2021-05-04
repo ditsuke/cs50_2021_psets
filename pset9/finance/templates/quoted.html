@@ -7,9 +7,15 @@
 {% block main %}
     <table class="table table-striped">
         {% for key in quote %}
+        {% if key == 'price' %}
+        <tr>
+            <td>{{quote[key] | usd}}</td>
+        </tr>
+        {% else %}
             <tr>
                 <td>{{quote[key]}}</td>
             </tr>
+        {% endif %}
         {% endfor %}
     </table>
 {% endblock main %}
