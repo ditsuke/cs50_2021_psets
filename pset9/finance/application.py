@@ -9,17 +9,9 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers import apology, extend_portfolio, isPositiveInt, login_required, lookup, usd
 
-import requests
-import json
-
-
-# Set API key (!! remove before submission)
-os.environ["API_KEY"] = "pk_0c13604415324fe7a7608a1c97aa1728"
-os.environ["FLASK_DEBUG"] = "1"
 
 # Configure application
 app = Flask(__name__)
-# app.run(debug=True)
 
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -48,7 +40,7 @@ db = SQL("sqlite:///finance.db")
 
 # Make sure API key is set
 if not os.environ.get("API_KEY"):
-    raise RuntimeError("API_KEY not set")
+    raise RuntimeError("IEX Cloud API_KEY not set")
 
 
 @app.route("/")
@@ -62,8 +54,6 @@ def index():
     totalPortfolioValue = eportfolio[1]
     return render_template("index.html", portfolio=user_portfolio, portVal=totalPortfolioValue)
 
-    return apology("TODO")
-
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
@@ -76,7 +66,7 @@ def buy():
         buy_stock = request.form.get("symbol").strip()
         buy_count = request.form.get("scount")
 
-        # Basic Validation of parameters
+        # Basic validation of parameters
         if not buy_stock or not buy_count or not isPositiveInt(buy_count):
             return apology("Invalid stock or count! :/")
 
@@ -107,10 +97,11 @@ def buy():
         session["user_balance"] = round(user_balance, 2)
 
         # Redirect to portfolio
-        flash("Successfully bought %s shares of %s @ $%s per share." % (buy_count, buy_stock, stock_price))
+        flash("Successfully bought %s shares of %s @ $%s per share." %
+              (buy_count, buy_stock, stock_price))
         return redirect("/")
 
-    return apology("TODO")
+    return apology("Unhandled Exception")
 
 
 @app.route("/history")
@@ -120,7 +111,6 @@ def history():
     user_tr_history = db.execute(
         "SELECT * FROM transactions WHERE userid = ?", session["user_id"])
     return render_template("history.html", history=user_tr_history)
-    return apology("TODO")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -245,7 +235,7 @@ def sell():
         sell_count = request.form.get("scount")
         stock_entry = next(
             (stock for stock in stock_portfolio if stock["stock"] == sell_stock), False)
-            
+
         # Validate and process form input further
         if not sell_stock or not sell_count or not isPositiveInt(sell_count):
             return apology("Invalid stock or count :|")
