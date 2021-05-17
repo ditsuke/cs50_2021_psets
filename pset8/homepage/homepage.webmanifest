@@ -1,0 +1,19 @@
+{
+    "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/web-manifest.json",
+    "short_name": "Homepage",
+    "name": "CS50 PSET8 - Homepage",
+    "icons": [
+        {
+            "src": "/styles/icons/home.svg",
+            "sizes": "192x192"
+        }
+    ],
+    "start_url": "/?source=pwa",
+    "background_color": "#570d0de6",
+    "display": "minimal-ui",
+    "scope": "/",
+    "theme_color": "#570d0de6",
+    "description": "My homepage for CS50x 2021's 8th Problem Set",
+    "orientation": "any",
+    "lang": "en-us"
+}

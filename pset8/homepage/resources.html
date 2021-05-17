@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#570d0de6">
+    <link href="styles/styles.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js"
+        integrity="sha512-YBk7HhgDZvBxmtOfUdvX0z8IH2d10Hp3aEygaMNhtF8fSOvBZ16D/1bXZTJV6ndk/L/DlXxYStP8jrF77v2MIg=="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
+        integrity="sha512-zc7WDnCM3aom2EziyDIRAtQg1mVXLdILE09Bo+aE1xk0AM2c2cVLfSW9NrxE5tKTX44WBY0Z2HClZ05ur9vB6A=="
+        crossorigin="anonymous"></script>
+    <script src="scripts/functions.js"></script>
+    <title>My Homepage</title>
+</head>
+
+<body>
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-sm">
+
+            <a class="navbar-brand" href="/">🏡</a>
+            <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navexp">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse collapse" id="navexp">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="muvid.html">GotG Music Videos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link nav-active" href="resources.html">Resources</a></li>
+                </ul>
+                <button class="btn-primary" id="theme-changer" onclick="changeTheme()">Theme 👆🔃</button>
+                <button class="btn-primary" id="dark-toggle" onclick="toggleDark()">🔆🌙</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Stuff -->
+    <main class="container devres">
+        <h3>Resources to Learn About Web Standards and Development</h3>
+        <hr>
+        <p>
+            While there are innumerable resources one can use to learn about web development, I'll mention those I used myself while in the process of development of this site and found useful:
+            <ol>
+                <li>
+                    <a href="https://developer.mozilla.org/" target="_blank">MDN Web Docs</a>: Previously called "Mozilla Developer Center", MDN is arguably the single best resource for 
+                    new and seasoned web developers alike. Although less popular than its cousin W3Schools (often mistaken to have link to W3C), the documentation is much more expansive
+                    and up to date with the latest and greatest the standards have to offer, including features that may not yet be implemented in all browsers. <br><br>
+                    <img class="d-block mx-auto" src="https://avatars.githubusercontent.com/u/7565578?s=280&v=4" alt="MDN Logo"> <br><br>
+                </li>
+                <li>
+                    <a href="https://w3schools.com/" target="_blank">W3Schools</a>: W3Schools, while being rather similar to MDN, has its own advantages and shortcomings. Not updated as frequently
+                    as MDN and a lot less detailed, W3Schools is still a useful resource for its relative simplicity and abundance of examples. Its a resource I'd recommend more
+                    to those not used to reading official documentations, as in that case they may find themselves more familiar to the representational style of W3Schools which may help them
+                    warm up to more professionally and comprehensively written resources like MDN. <br><br>
+                    <img class="d-block mx-auto" src="https://upload.wikimedia.org/wikipedia/commons/3/3e/W3Schools_logo.png" alt="W3Schools Logo"> <br><br>
+                </li>
+                <li>
+                    <a href="https://css-tricks.com/" target="_blank">CSS-Tricks</a>: In its creators words, CSS-Tricks is "a website all about building websites". In practice I've found
+                    that it is a great resource for some very specific problems, most pertaining to CSS, that a web developer may run into. It often has multiple solutions for the same problem
+                    among which one is often exactly what they may be looking for. CSS-Tricks has great SEO so it is often at the top of keyword search results for most problems. 
+                    Also, being the only resource here that's akin to a blog, it has daily articles many of which are very intriguing and good at informing and educating the reader about 
+                    latest web technologies or wonderful things that can be accomplished with existing ones. <br><br>
+                    <img class="d-block mx-auto" src="https://css-tricks.com/wp-content/uploads/2020/12/social-default.png" alt="CSS-Tricks Logo"> <br><br>
+                </li>
+                <li>
+                    <a href="https://stackoverflow.com" target="_blank">Stack Overflow</a>: Stack Overflow is a QnA site for developers of all experience levels. In practice, it is the single
+                    biggest site of its kind on the internet where hundreds and thousands of developers, many of whom very experienced and even renowned come together to share knowledge and solve
+                    problems. While it is not focused on Web Development, one will find that most problems they may come up with in their web development journey already has a solution shared by someone on Stack Overflow.
+                    This doesn't however mean that it's a complete resource but the reader can get help from some of the brightest minds there provided they adhere to the site's code of conduct and use it responsibly (it has a
+                    reputation for not being kind on new users who break these and other community expectations). <br><br>
+                    <img class="d-block mx-auto" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Stack_Overflow.png/799px-Stack_Overflow.png" alt="Stack Overflow Logo"> <br><br>
+                </li>
+            </ol>
+        </p>
+    </main>
+
+    <div id="vertical-spacer">
+
+    </div>
+    <footer class="page-footer sticky-bottom">
+        <div class="text-center">
+            <small>This should be a footer. Is it?</small>
+        </div>
+    </footer>
+</body>
+
+</html>

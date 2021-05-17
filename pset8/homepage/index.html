@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#570d0de6">
+    <link rel="manifest" href="homepage.webmanifest">
+    <link href="styles/styles.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js"
+        integrity="sha512-YBk7HhgDZvBxmtOfUdvX0z8IH2d10Hp3aEygaMNhtF8fSOvBZ16D/1bXZTJV6ndk/L/DlXxYStP8jrF77v2MIg=="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
+        integrity="sha512-zc7WDnCM3aom2EziyDIRAtQg1mVXLdILE09Bo+aE1xk0AM2c2cVLfSW9NrxE5tKTX44WBY0Z2HClZ05ur9vB6A=="
+        crossorigin="anonymous"></script>
+    <script src="scripts/functions.js"></script>
+    <title>My Homepage</title>
+</head>
+
+<body>
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-sm">
+
+            <a class="navbar-brand" href="/">🏡</a>
+            <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navexp">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse collapse" id="navexp">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item"><a class="nav-link nav-active" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="muvid.html">GotG Music Videos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+                </ul>
+                <button class="btn-primary" id="theme-changer" onclick="changeTheme()">Theme 👆🔃</button>
+                <button class="btn-primary" id="dark-toggle" onclick="toggleDark()">🔆🌙</button>
+            </div>
+        </nav>
+    </header>
+    <main class="container">
+        <div class="container" id="welcome">
+
+            <!-- Introduce the page and cs50 -->
+            <div class="row mb-3">
+
+                <div class="col-sm-6 mb-3">
+                    <img src="https://i.imgur.com/LozYtxK.png" loading="lazy" class="fwimage"
+                        alt="nobody touches my home!" title="my home!"><br>
+                    <h4>Welcome to my Homepage!</h4><br>
+                    Hello, I am dst27 and this is my homepage for the 8th problem set of the
+                    CS50x <a href="https://en.wikipedia.org/wiki/OpenCourseWare">OpenCourseWare</a> by Harvard
+                    University!<br>
+                    <ul>
+                        <li><a href="https://en.wikipedia.org/wiki/CS50">More about CS50x</a><br>
+                        <li> <a href="l">More about OpenCourseWare</a>
+                    </ul>
+                </div>
+
+                <div class="col-sm-6 mb-3">
+                    <img src="https://i.imgur.com/ld9fwSG.png" alt="fillink" class="fwimage" title="this is cs50x!"><br>
+                    <h4>The CS50x OpenCourseWare</h4><br>
+                    <p>
+                        CS50 is an introductory course in Computer Sciences by Harvard University.<br>
+                        Taught by Prof. David J. Malan, CS50 aims to inculcate in people the temper
+                        to think algorithmically and look for efficient ways to solve problems
+                        in Computer Science.<br>
+                    </p>
+                    <p>
+                        CS50 is a 10 week course, which starts with programming fundamentals in <b>Scratch</b>, working
+                        it's
+                        way up to
+                        the low level <b>C</b> language, followed by <b>Python</b>, and then <b>HTML, CSS and
+                            Javascript</b>
+                        (where we are right now!).<br>
+                        Following these, there's also Flask, something I've been looking forward to getting to after
+                        finishing with the development
+                        of this project.
+                    </p>
+                </div>
+            </div> <br>
+
+            <!-- Demonstrate code -->
+            <div class="container" id="code-demo-con">
+                <hr id="beforelang">
+                <p>
+                    We will now see "Hello, World!" programs in the languages CS50 uses (<strong>C</strong>,
+                    <strong>Python</strong>, & <strong>JavaScript</strong>!), followed by a comparison of the
+                    implementations of the same, simple yet more complicated program in C and Python.
+                </p><br>
+
+                <!-- "Hello, World!" programs go here-->
+                <div class="samp-title">
+                    <h3> "Hello, World!" Programs! </h3>
+                </div>
+
+                <div class="row lrow justify-content-center">
+                    <div class="col-sm-4 codecon">
+                        <span class="langname">C</span> <br>
+                        <pre class="hlt">
+                        <code class="lang-c">
+#include &lt;stdio.h&gt;
+
+int main(void) {
+    printf("Hello, World!\n");
+    return 0;
+}
+                    </code>
+                    </pre>
+                    </div>
+                    <div class="col-sm-4 codecon">
+                        <span class="langname">Python</span> <br>
+                        <pre class="hlt">
+                        <code class="lang-python">
+print("Hello, World!")
+                    </code>
+                    </pre>
+                    </div>
+                    <div class="col-sm-4 codecon">
+                        <span class="langname">JavaScript</span> <br>
+                        <pre class="hlt">
+                        <code class="lang-javascript">
+console.log("Hello, World!");
+                    </code>
+                    </pre>
+                        <h5>OR</h5>
+                        <pre class="hlt">
+                            <code class="lang-javascript">
+alert("Hello, World!");
+                            </code>
+                        </pre>
+                    </div>
+                </div>
+
+                <!-- More Complex Program(s) Go here-->
+                <div class="samp-title">
+                    <h3>A More Complex Program!</h3>
+                    <span style="font-weight: 530;">These generate a mario-like staircase.</span><br>
+                    <span>We're comparing the C code to Python code side by side.</span><br>
+                    <span>This is to show the difference betwen a lower level language and a high level
+                        language.</span><br>
+                    <span>The Python implementation is much shorter and relatively simpler.</span>
+                </div>
+                <div class="row justify-content-center lrow">
+                    <div class="col-md-6">
+                        <div class="codecon">
+                            <span class="langname">C</span>
+                            <pre class="hlt">
+                                <code class="lang-c">
+#include &lt;stdio.h&gt;
+#include &lt;cs50.h&gt;
+    
+    // Function prototypes
+    void stair(int n);
+    int get_int_in_range(int lower, int upper);
+    
+    int main(void)
+    {
+        int n = get_int_in_range(1, 8);
+        stair(n);
+        return 0;
+    }
+    
+    void stair(int n)
+    {
+        int k, l, m;
+    
+        // Iterate n times
+        for (m = 0; m &lt; n; m++)
+        {
+            // Print n-m spaces " " on each row
+            for (k = 0; k &lt; n - (m + 1); k++)
+            {
+                printf(" ");
+            }
+    
+            // Print l=m sharps "#" on each row
+            for (l = 0; l &lt; m + 1; l++)
+            {
+                printf("#");
+            }
+    
+            // Two spaces between left and right staircases
+            printf("  ");
+    
+            // Print l=m sharps "#" on each row
+            for (l = 0; l &lt; m + 1; l++)
+            {
+                printf("#");
+            }
+    
+            // Move cursor to next line
+            printf("\n");
+        }
+    }
+    
+    int get_int_in_range(int lower, int upper)
+    {
+        int n = 0;
+    
+        // Keep asking for input until a 1 &lt;= n &lt;= 8
+        while (n &lt; lower || n &gt; upper)
+        {
+            n = get_int("Staircase height: ");
+        }
+        return n;
+    }
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="codecon">
+                            <span class="langname">Python</span>
+                            <pre class="hlt">
+                                <code class="lang-python">
+from cs50 import get_int
+
+# Get height from user, keep asking until 1 <= h >= 8
+while True:
+    h = get_int("Height: ")
+    if h >= 1 and h <= 8:
+        break
+
+# Print staircase
+for r in range(h):
+    print(" " * (h - r - 1) + "#" * (r + 1) + "  " + "#" * (r + 1))
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </main>
+
+    <!-- Ensure footer is at bottom of viewport -->
+    <div id="vertical-spacer">
+
+    </div>
+    <!-- Footer goes below! -->
+    <footer class="page-footer sticky-bottom">
+        <div class="text-center">
+            <small>This should be a footer. Is it?</small>
+        </div>
+    </footer>
+</body>
+
+</html>
