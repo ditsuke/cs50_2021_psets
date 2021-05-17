@@ -142,7 +142,7 @@ alert("Hello, World!");
                 <!-- More Complex Program(s) Go here-->
                 <div class="samp-title">
                     <h3>A More Complex Program!</h3>
-                    <span style="font-weight: 530;">These generate a mario-like staircase.</span><br>
+                    <span style="font-weight: 500;">These generate a mario-like staircase.</span><br>
                     <span>We're comparing the C code to Python code side by side.</span><br>
                     <span>This is to show the difference betwen a lower level language and a high level
                         language.</span><br>
@@ -223,10 +223,10 @@ alert("Hello, World!");
                                 <code class="lang-python">
 from cs50 import get_int
 
-# Get height from user, keep asking until 1 <= h >= 8
+# Get height from user, keep asking until 1 &lt;= h >= 8
 while True:
     h = get_int("Height: ")
-    if h >= 1 and h <= 8:
+    if h >= 1 and h &lt;= 8:
         break
 
 # Print staircase
@@ -238,6 +238,7 @@ for r in range(h):
                     </div>
                 </div>
             </div>
+        </div>
     </main>
 
     <!-- Ensure footer is at bottom of viewport -->

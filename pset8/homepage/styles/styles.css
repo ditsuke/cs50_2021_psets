@@ -1,6 +1,5 @@
 @import "bootstrap.min.css";
 @import "prism.min.css";
-
 :root {
     --theme-color: #570d0de6;
     background-color: var(--theme-color);
@@ -178,13 +177,9 @@ pre {
 }
 
 @media only screen and (min-width: 768px) {
-    .vid-item {
-        /* max-width: 60%; */
-    }
     .embed-responsive {
         max-width: 50%;
     }
-
     .devres img {
         max-width: 50%;
     }

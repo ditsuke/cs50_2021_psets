@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#570d0de6">
     <link href="styles/styles.css" rel="stylesheet">
@@ -19,7 +19,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
         integrity="sha512-zc7WDnCM3aom2EziyDIRAtQg1mVXLdILE09Bo+aE1xk0AM2c2cVLfSW9NrxE5tKTX44WBY0Z2HClZ05ur9vB6A=="
         crossorigin="anonymous"></script>
-        <script src="scripts/functions.js"></script>
+    <script src="scripts/functions.js"></script>
     <title>My Homepage</title>
 </head>
 
@@ -35,67 +35,66 @@
             <div class="navbar-collapse collapse" id="navexp">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link nav-active href="#">GotG Music Videos</a></li>
+                    <li class="nav-item"><a class="nav-link nav-active" href="#">GotG Music Videos</a></li>
                     <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
                 </ul>
             </div>
             <button class="btn-primary" id="theme-changer" onclick="changeTheme()">Theme 👆🔃</button>
-                <button class="btn-primary" id="dark-toggle" onclick="toggleDark()">🔆🌙</button>
+            <button class="btn-primary" id="dark-toggle" onclick="toggleDark()">🔆🌙</button>
         </nav>
     </header>
 
     <!-- Main Stuff -->
     <main class="container">
-        <!-- <div class="container" id="showcase-body"> -->
-            <div class="d-inline-block" id="heading-div">
-                <h2 style="font-weight: 550"> Music Videos </h2>
-                <h3 style="font-weight: 550"> Guardians of the Galaxy, Volume 1 </h3>
-                <hr width=100%>
+        <div class="d-inline-block" id="heading-div">
+            <h2 style="font-weight: 600"> Music Videos </h2>
+            <h3 style="font-weight: 600"> Guardians of the Galaxy, Volume 1 </h3>
+            <hr>
+        </div>
+        <p id="gotg-praise">
+            Guardians of the Galaxy Vol. 1 was a surprisingly good movie, but more remarkably so one with great
+            old music!<br>
+            I've dedicated this page to showcase a semi-curated collection of music videos for songs from the movie.
+            Enjoy! ;)
+        </p>
+        <p>
+            Whoops, did I mention how fun Guardians of the Galaxy was? I went in blind but the <br> the music (why we're
+            here!),
+            and the refreshingly comedic characters made it a really
+            fun watch and got it into the list <br> of my favourite Marvel movies (I'm not the only one!) <br>
+            To the music now...
+        </p>
+
+        <div class="vid-item">
+            <h3 class="song-title"> Electric Light Orchestra - Mr. Blue Sky </h3>
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/aQUlA8Hcv4s/?controls=0"
+                    allowfullscreen></iframe>
             </div>
-            <p id="gotg-praise">
-                Guardians of the Galaxy Vol. 1 was a surprisingly good movie, but more remarkably so one with great
-                old music!<br>
-                I've dedicated this page to showcase a semi-curated collection of music videos for songs from the movie. Enjoy! ;)
-            </p>
-            <p>
-                Whoops, did I mention how fun Guardians of the Galaxy was? I went in blind but the <br> the music (why we're here!), 
-                and the refreshingly comedic characters made it a really 
-                fun watch and got it into the list <br> of my favourite Marvel movies (I'm not the only one!) <br> 
-                To the music now...
-            </p>
+        </div>
+
+        <div class="vid-item">
+            <h3 class="song-title"> REO Speedwagon - Can't Fight This Feeling </h3>
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8/?controls=0"
+                    allowfullscreen></iframe>
+            </div>
 
             <div class="vid-item">
-                <h3 class="song-title"> Electric Light Orchestra - Mr. Blue Sky </h3>
+                <h3 class="song-title"> Silver - Wham Bam Shang-A-Lang </h3>
                 <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/aQUlA8Hcv4s/?controls=0"
+                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/M5iSEdo5VNI?controls=0"
                         allowfullscreen></iframe>
                 </div>
             </div>
 
             <div class="vid-item">
-                <h3 class="song-title"> REO Speedwagon - Can't Fight This Feeling </h3>
+                <h3 class="song-title"> Redbone - Come and Get Your Love </h3>
                 <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8/?controls=0"
+                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/bc0KhhjJP98/?controls=0"
                         allowfullscreen></iframe>
                 </div>
-
-                <div class="vid-item">
-                    <h3 class="song-title"> Silver - Wham Bam Shang-A-Lang </h3>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/M5iSEdo5VNI?controls=0"
-                            allowfullscreen></iframe>
-                    </div>
-                </div>
-
-                <div class="vid-item">
-                    <h3 class="song-title"> Redbone - Come and Get Your Love </h3>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item"
-                            src="https://www.youtube.com/embed/bc0KhhjJP98/?controls=0" allowfullscreen></iframe>
-                    </div>
-                </div>
-
             </div>
 
         </div>
